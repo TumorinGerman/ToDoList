@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>My testing page</title>
+    <title>ToDo List</title>
     <script src="main.js" defer></script>
     <link
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -15,7 +15,7 @@
   <body>
     <div class="container m-3">
       <div class="row">
-        <div class="col">
+        <div class="col-12 col-sm-4">
           <h3>Lists</h3>
           <form class="form-inline mb-2" data-container="new-list-form">
             <label for="new-list-name" class="sr-only">New list name</label>
@@ -30,7 +30,7 @@
           </form>
           <div data-container="lists"></div>
         </div>
-        <div class="col">
+        <div class="col-12 col-sm-8">
           <h3>Tasks</h3>
           <form class="form-inline mb-2" data-container="new-task-form">
             <label for="new-task-name" class="sr-only">New task name</label>
