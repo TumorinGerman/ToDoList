@@ -1,10 +1,3 @@
-//const fs = require("fs");
-//import 'core-js/stable'
-//const path = require("path");
-//const _ = require("lodash");
-//const async = require("async");
-//const axios = require("axios").default;
-
 const renderTasks = (state, elements) => {
   elements.tasksContainer.innerHTML = "";
 
@@ -58,7 +51,7 @@ const renderLists = (state, elements) => {
 };
 
 const runApp = () => {
-  const defaultChannelId = uniqueId();
+  const defaultChannelId = _.uniqueId();
   const state = {
     activeListId: defaultChannelId,
     lists: [{ id: defaultChannelId, name: "General" }],
@@ -82,7 +75,7 @@ const runApp = () => {
     const form = e.target;
     const formData = new FormData(form);
     const listName = formData.get("name");
-    const list = { id: uniqueId(), name: listName.trim() };
+    const list = { id: _.uniqueId(), name: listName.trim() };
     form.reset();
     form.querySelector("input").focus();
     state.lists.push(list);
