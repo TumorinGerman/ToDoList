@@ -88,7 +88,7 @@ const runApp = () => {
     const formData = new FormData(form);
     const taskName = formData.get("name");
     const task = {
-      id: uniqueId(),
+      id: _.uniqueId(),
       name: taskName.trim(),
       listId: state.activeListId,
     };
