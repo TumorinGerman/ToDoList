@@ -16,21 +16,32 @@ const renderTasks = (state, elements) => {
     const li = document.createElement("li");
     li.classList.add("list-group-item");
     li.setAttribute("id", `${id}`);
-    const input = document.createElement("input");
-    input.classList.add("form-check-input", "me-1");
-    input.setAttribute("type", "checkbox");
-    input.setAttribute("value", " ");
-    input.setAttribute("id", `${id}`);
+    const checkbox = document.createElement("input");
+    checkbox.classList.add("form-check-input", "me-1");
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("value", " ");
+    checkbox.setAttribute("id", `${id}`);
+
     const label = document.createElement("label");
     label.classList.add("form-check-label");
     label.setAttribute("for", `${id}`);
     label.textContent = name;
-    li.append(input);
+    li.append(checkbox);
     li.append(label);
     ulForTasks.append(li);
   });
 
+  const inputDelTask = document.createElement("input");
+  inputDelTask.setAttribute("type", "submit");
+  inputDelTask.setAttribute("value", "Delete Task(s)");
+  inputDelTask.classList.add("btn", "btn-danger");
+  inputDelTask.addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    const allCheckboxes = document.querySelectorAll("input[type=checkbox]");
+  });
+
   elements.tasksContainer.append(ulForTasks);
+  elements.tasksContainer.append(inputDelTask);
 };
 
 const renderLists = (state, elements) => {
