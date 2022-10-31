@@ -10,10 +10,23 @@ const renderTasks = (state, elements) => {
   }
 
   const ulForTasks = document.createElement("ul");
+  ulForTasks.classList.add("list-group");
 
-  filteredTasks.forEach(({ name }) => {
+  filteredTasks.forEach(({ id, name }) => {
     const li = document.createElement("li");
-    li.textContent = name;
+    li.classList.add("list-group-item");
+    li.setAttribute("id", `${id}`);
+    const input = document.createElement("input");
+    input.classList.add("form-check-input", "me-1");
+    input.setAttribute("type", "checkbox");
+    input.setAttribute("value", " ");
+    input.setAttribute("id", `${id}`);
+    const label = document.createElement("label");
+    label.classList.add("form-check-label");
+    label.setAttribute("for", `${id}`);
+    label.textContent = name;
+    li.append(input);
+    li.append(label);
     ulForTasks.append(li);
   });
 
