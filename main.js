@@ -32,16 +32,30 @@ const renderTasks = (state, elements) => {
   });
 
   const inputDelTask = document.createElement("input");
-  inputDelTask.setAttribute("type", "submit");
+  inputDelTask.setAttribute("type", "button");
   inputDelTask.setAttribute("value", "Delete Task(s)");
   inputDelTask.classList.add("btn", "btn-danger");
-  inputDelTask.addEventListener("submit", (ev) => {
-    ev.preventDefault();
-    const allCheckboxes = document.querySelectorAll("input[type=checkbox]");
-  });
 
   elements.tasksContainer.append(ulForTasks);
   elements.tasksContainer.append(inputDelTask);
+
+  inputDelTask.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    const allCheckboxes = document.querySelectorAll(
+      "[data-container=tasks]  [type=checkbox]"
+    );
+    [...allCheckboxes].map((element) => {
+      if (element.checked) {
+        state.tasks.forEach((task, index) => {
+          if (task.id === element.id) {
+            state.tasks.splice(index, 1);
+          }
+        });
+      }
+    });
+    console.log(state.tasks);
+    renderTasks(state, elements);
+  });
 };
 
 const renderLists = (state, elements) => {
