@@ -47,8 +47,9 @@ const renderTasks = (state, elements) => {
     [...allCheckboxes].map((element) => {
       if (element.checked) {
         state.tasks.forEach((task, index) => {
-          if (task.id === element.id) {
+          if (task.id == element.id) {
             state.tasks.splice(index, 1);
+            localStorage.setItem("state", JSON.stringify(state));
           }
         });
       }
@@ -82,6 +83,7 @@ const renderLists = (state, elements) => {
       channelNameElement.addEventListener("click", (e) => {
         e.preventDefault();
         state.activeListId = id;
+        localStorage.setItem("state", JSON.stringify(state));
         renderLists(state, elements);
         renderTasks(state, elements);
       });
@@ -106,12 +108,12 @@ const renderLists = (state, elements) => {
       );
       [...triggerRadio].map((element) => {
         if (element.checked) {
-          if (element.id === "1") {
+          if (element.id === "defaultId") {
             alert('You can\'t delete default List "General"');
             return;
           }
           const tasksOfThisList = state.tasks.filter(
-            ({ listId }) => listId === element.id
+            ({ listId }) => listId == element.id
           );
           if (tasksOfThisList.length !== 0) {
             alert(
@@ -120,8 +122,9 @@ const renderLists = (state, elements) => {
             return;
           }
           state.lists.forEach((list, index) => {
-            if (list.id === element.id) {
+            if (list.id == element.id) {
               state.lists.splice(index, 1);
+              localStorage.setItem("state", JSON.stringify(state));
             }
           });
         }
@@ -132,13 +135,15 @@ const renderLists = (state, elements) => {
 };
 
 const runApp = () => {
-  const defaultChannelId = _.uniqueId();
-  const state = {
-    activeListId: defaultChannelId,
-    lists: [{ id: defaultChannelId, name: "General" }],
-    tasks: [],
-  };
-
+  let state = JSON.parse(localStorage.getItem("state"));
+  if (!state) {
+    const defaultChannelId = "defaultId";
+    state = {
+      activeListId: defaultChannelId,
+      lists: [{ id: defaultChannelId, name: "General" }],
+      tasks: [],
+    };
+  }
   const elements = {
     listsContainer: document.querySelector('[data-container="lists"]'),
     tasksContainer: document.querySelector('[data-container="tasks"]'),
@@ -156,10 +161,11 @@ const runApp = () => {
     const form = e.target;
     const formData = new FormData(form);
     const listName = formData.get("name");
-    const list = { id: _.uniqueId(), name: listName.trim() };
+    const list = { id: Date.now(), name: listName.trim() };
     form.reset();
     form.querySelector("input").focus();
     state.lists.push(list);
+    localStorage.setItem("state", JSON.stringify(state));
     renderLists(state, elements);
   });
 
@@ -169,13 +175,14 @@ const runApp = () => {
     const formData = new FormData(form);
     const taskName = formData.get("name");
     const task = {
-      id: _.uniqueId(),
+      id: Date.now(),
       name: taskName.trim(),
       listId: state.activeListId,
     };
     form.reset();
     form.querySelector("input").focus();
     state.tasks.push(task);
+    localStorage.setItem("state", JSON.stringify(state));
     renderTasks(state, elements);
   });
 
