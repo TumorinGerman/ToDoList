@@ -49,7 +49,7 @@ const renderTasks = (state, elements) => {
         state.tasks.forEach((task, index) => {
           if (task.id == element.id) {
             state.tasks.splice(index, 1);
-            localStorage.setItem("state", JSON.stringify(state));
+            saveState(state);
           }
         });
       }
@@ -83,7 +83,7 @@ const renderLists = (state, elements) => {
       channelNameElement.addEventListener("click", (e) => {
         e.preventDefault();
         state.activeListId = id;
-        localStorage.setItem("state", JSON.stringify(state));
+        saveState(state);
         renderLists(state, elements);
         renderTasks(state, elements);
       });
@@ -124,7 +124,7 @@ const renderLists = (state, elements) => {
           state.lists.forEach((list, index) => {
             if (list.id == element.id) {
               state.lists.splice(index, 1);
-              localStorage.setItem("state", JSON.stringify(state));
+              saveState(state);
             }
           });
         }
@@ -132,6 +132,10 @@ const renderLists = (state, elements) => {
       renderLists(state, elements);
     });
   }
+};
+
+const saveState = (state) => {
+  localStorage.setItem("state", JSON.stringify(state));
 };
 
 const runApp = () => {
@@ -165,7 +169,7 @@ const runApp = () => {
     form.reset();
     form.querySelector("input").focus();
     state.lists.push(list);
-    localStorage.setItem("state", JSON.stringify(state));
+    saveState(state);
     renderLists(state, elements);
   });
 
@@ -182,7 +186,7 @@ const runApp = () => {
     form.reset();
     form.querySelector("input").focus();
     state.tasks.push(task);
-    localStorage.setItem("state", JSON.stringify(state));
+    saveState(state);
     renderTasks(state, elements);
   });
 
