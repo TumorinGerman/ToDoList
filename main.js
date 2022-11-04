@@ -9,7 +9,6 @@ const renderTasks = (state, elements) => {
     return;
   }
 
-  //
   const ulForTasks = document.createElement("ul");
   ulForTasks.classList.add("list-group");
 
