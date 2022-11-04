@@ -13,22 +13,22 @@ const renderTasks = (state, elements) => {
   ulForTasks.classList.add("list-group");
 
   filteredTasks.forEach(({ id, name }) => {
-    const li = document.createElement("li");
-    li.classList.add("list-group-item");
-    li.setAttribute("id", `${id}`);
-    const checkbox = document.createElement("input");
-    checkbox.classList.add("form-check-input", "me-1");
-    checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("value", " ");
-    checkbox.setAttribute("id", `${id}`);
+    const liForTasks = document.createElement("li");
+    liForTasks.classList.add("list-group-item");
+    liForTasks.setAttribute("id", `${id}`);
+    const checkboxForTasks = document.createElement("input");
+    checkboxForTasks.classList.add("form-check-input", "me-1");
+    checkboxForTasks.setAttribute("type", "checkbox");
+    checkboxForTasks.setAttribute("value", " ");
+    checkboxForTasks.setAttribute("id", `${id}`);
 
-    const label = document.createElement("label");
-    label.classList.add("form-check-label");
-    label.setAttribute("for", `${id}`);
-    label.textContent = name;
-    li.append(checkbox);
-    li.append(label);
-    ulForTasks.append(li);
+    const labelForTasks = document.createElement("label");
+    labelForTasks.classList.add("form-check-label");
+    labelForTasks.setAttribute("for", `${id}`);
+    labelForTasks.textContent = name;
+    liForTasks.append(checkboxForTasks);
+    liForTasks.append(labelForTasks);
+    ulForTasks.append(liForTasks);
   });
 
   const inputDelTask = document.createElement("input");
@@ -53,7 +53,6 @@ const renderTasks = (state, elements) => {
         });
       }
     });
-    console.log(state.tasks);
     renderTasks(state, elements);
   });
 };
@@ -61,10 +60,17 @@ const renderTasks = (state, elements) => {
 const renderLists = (state, elements) => {
   elements.listsContainer.innerHTML = "";
   const ulForLists = document.createElement("ul");
+  ulForLists.classList.add("list-group");
 
   state.lists.forEach(({ id, name }) => {
-    const li = document.createElement("li");
+    const liForList = document.createElement("li");
     let channelNameElement;
+
+    const checkboxForList = document.createElement("input");
+    checkboxForList.classList.add("form-check-input", "me-1");
+    checkboxForList.setAttribute("type", "radio");
+    checkboxForList.setAttribute("id", `${id}`);
+    checkboxForList.setAttribute("name", "listGroupRadio");
 
     if (id === state.activeListId) {
       channelNameElement = document.createElement("b");
@@ -81,11 +87,48 @@ const renderLists = (state, elements) => {
       });
     }
 
-    li.append(channelNameElement);
-    ulForLists.append(li);
+    liForList.append(checkboxForList);
+    liForList.append(channelNameElement);
+    ulForLists.append(liForList);
   });
 
   elements.listsContainer.append(ulForLists);
+  if (state.lists.length > 1) {
+    const inputDelList = document.createElement("input");
+    inputDelList.setAttribute("type", "button");
+    inputDelList.setAttribute("value", "Delete List");
+    inputDelList.classList.add("btn", "btn-danger");
+    elements.listsContainer.append(inputDelList);
+
+    inputDelList.addEventListener("click", (ev) => {
+      const triggerRadio = document.querySelectorAll(
+        "[data-container=lists] [type=radio]"
+      );
+      [...triggerRadio].map((element) => {
+        if (element.checked) {
+          if (element.id === "1") {
+            alert('You can\'t delete default List "General"');
+            return;
+          }
+          const tasksOfThisList = state.tasks.filter(
+            ({ listId }) => listId === element.id
+          );
+          if (tasksOfThisList.length !== 0) {
+            alert(
+              "You can't delete List with Tasks. Please delete all Tasks first."
+            );
+            return;
+          }
+          state.lists.forEach((list, index) => {
+            if (list.id === element.id) {
+              state.lists.splice(index, 1);
+            }
+          });
+        }
+      });
+      renderLists(state, elements);
+    });
+  }
 };
 
 const runApp = () => {
