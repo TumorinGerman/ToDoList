@@ -1,2 +1,2 @@
 # ToDoList
-my ToDo list
+my ToDo list on pure JS
